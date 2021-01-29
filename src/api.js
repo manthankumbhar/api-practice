@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
   });
 });
 
-router.post("/github", (req, res) => {
+router.get("/github", (req, res) => {
   res.json(req.body);
 });
 
