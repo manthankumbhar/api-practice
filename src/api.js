@@ -11,14 +11,12 @@ router.get("/", (req, res) => {
   });
 });
 
-//practice
-
-// router.get("/github", (req, res) => {
-//   res.json(req.body);
-// });
+router.post("/github", (req, res) => {
+  res.json(req.body);
+});
 
 router.get("/git", (req, res) => {
-  res.json(req.body);
+  res.json();
 });
 
 app.use("/.netlify/functions/api", router);
