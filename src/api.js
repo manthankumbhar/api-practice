@@ -13,7 +13,11 @@ router.get("/", (req, res) => {
 
 //practice
 
-router.get("/github", (req, res) => {
+// router.get("/github", (req, res) => {
+//   res.json(req.body);
+// });
+
+router.get("/git", (req, res) => {
   res.json(req.body);
 });
 
