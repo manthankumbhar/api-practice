@@ -11,9 +11,9 @@ router.get("/", (req, res) => {
   });
 });
 
-router.post("/github", (req, res) => {
-  res.json({ hello: "hi" });
-});
+// router.post("/github", (req, res) => {
+//   res.json({ hello: "hi" });
+// });
 
 app.use("/.netlify/functions/api", router);
 
