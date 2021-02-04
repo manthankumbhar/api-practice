@@ -15,16 +15,19 @@ router.post("/", (req, res) => {
   console.log("passed");
   let data = JSON.parse(req.body);
   console.log("passed");
-  request.post({
-    url:
-      "https://discord.com/api/webhooks/804824333913423923/qlEpAryvDXGPrXkIHrBI5JDmOMbi6B8u8bg_pL8sMVMBhhrt5o8sk37JQYGSwOc3l01k",
-    headers: {
-      "Content-Type": "application/json",
+  request.post(
+    {
+      url:
+        "https://discord.com/api/webhooks/804824333913423923/qlEpAryvDXGPrXkIHrBI5JDmOMbi6B8u8bg_pL8sMVMBhhrt5o8sk37JQYGSwOc3l01k",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      json: {
+        content: `${data.repository.owner.name} just pushed a commit with message - '${data.head_commit.message}' to <${data.repository.name}>`,
+      },
     },
-    json: {
-      content: `${data.repository.owner.name} just pushed a commit with message - '${data.head_commit.message}' to <${data.repository.name}>`,
-    },
-  });
+    console.log(request.post ? true : false)
+  );
   console.log("passed");
   res.json(
     `${data.repository.owner.name} just pushed a commit with message - '${data.head_commit.message}' to <${data.repository.name}>`
