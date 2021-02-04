@@ -67,6 +67,7 @@ router.post("/test", (req, res) => {
       content: JSON.stringify(
         `${data.repository.owner.name} just pushed a commit with message - '${data.head_commit.message}' to <${data.repository.name}>`
       ),
+      ContentType: "application/json",
     },
   });
   res.json({ message: "success" });
