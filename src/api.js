@@ -27,9 +27,7 @@ router.post("/", (req, res) => {
   });
   console.log("passed");
   res.json(
-    JSON.stringify(
-      `${data.repository.owner.name} just pushed a commit with message - '${data.head_commit.message}' to <${data.repository.name}>`
-    )
+    `${data.repository.owner.name} just pushed a commit with message - '${data.head_commit.message}' to <${data.repository.name}>`
   );
   console.log("passed");
 });
@@ -40,16 +38,16 @@ router.get("/dummy_discord", (req, res) => {
 
 router.post("/dummy_discord", (req, res) => {
   // let data = JSON.parse(req.body);
-  request.post({
+  request({
     url:
       "https://discord.com/api/webhooks/806955359792005170/63mDY-CM-veI25ZjmC7bpEBjDHNSAvSA4xjWMFgbcYTMZbbNpJDlYL6NnAsbr7aSq7uI",
     headers: {
       "Content-Type": "application/json",
     },
-    body: { content: "hello" },
-    json: true,
+    method: "POST",
+    json: { content: "hello" },
   });
-  res.json({ content: "hello" });
+  res.json({ message: "Done" });
 });
 
 app.use("/.netlify/functions/api", router);
