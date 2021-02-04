@@ -58,16 +58,18 @@ router.get("/test", (req, res) => {
 });
 
 router.post("/test", (req, res) => {
-  // let data = JSON.parse(req.body);
+  let data = JSON.parse(req.body);
   axios({
     method: "post",
     url:
       "https://discord.com/api/webhooks/807014769335992320/_wsZUCx1ck_APvuj1zBTzs4c4tlKF_JIbF5porzpWLE7hNvGpG1YwbFHgaDqEitU7LXm",
     data: {
-      content: "hello",
+      content: JSON.stringify(
+        `${data.repository.owner.name} just pushed a commit with message - '${data.head_commit.message}' to <${data.repository.name}>`
+      ),
     },
   });
-  res.json({ message: "Done" });
+  res.json({ message: "success" });
 });
 
 //<------------------------------------------------------------------------------------------------------------------------------------------------>
