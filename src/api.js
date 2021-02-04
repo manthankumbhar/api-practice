@@ -46,9 +46,9 @@ router.post("/dummy_discord", (req, res) => {
     headers: {
       "Content-Type": "application/json",
     },
-    json: { content: JSON.stringify(data) },
+    json: { content: console.log(data) },
   });
-  res.json({ content: "hola" });
+  res.json({ content: data });
 });
 
 app.use("/.netlify/functions/api", router);
