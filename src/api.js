@@ -39,16 +39,17 @@ router.get("/dummy_discord", (req, res) => {
 });
 
 router.post("/dummy_discord", (req, res) => {
-  let data = JSON.parse(req.body);
+  // let data = JSON.parse(req.body);
   request.post({
     url:
       "https://discord.com/api/webhooks/806955359792005170/63mDY-CM-veI25ZjmC7bpEBjDHNSAvSA4xjWMFgbcYTMZbbNpJDlYL6NnAsbr7aSq7uI",
     headers: {
       "Content-Type": "application/json",
     },
-    json: { content: console.log(data) },
+    body: { content: "hello" },
+    json: true,
   });
-  res.json({ content: data });
+  res.json({ content: "hello" });
 });
 
 app.use("/.netlify/functions/api", router);
