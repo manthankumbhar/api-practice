@@ -17,7 +17,7 @@ router.post("/", (req, res) => {
   console.log("passed");
   request.post({
     url:
-      "https://discord.com/api/webhooks/806955359792005170/63mDY-CM-veI25ZjmC7bpEBjDHNSAvSA4xjWMFgbcYTMZbbNpJDlYL6NnAsbr7aSq7uI",
+      "https://discord.com/api/webhooks/804824333913423923/qlEpAryvDXGPrXkIHrBI5JDmOMbi6B8u8bg_pL8sMVMBhhrt5o8sk37JQYGSwOc3l01k",
     headers: {
       "Content-Type": "application/json",
     },
@@ -39,7 +39,7 @@ router.get("/dummy_discord", (req, res) => {
 router.post("/dummy_discord", (req, res) => {
   request.post({
     url:
-      "https://discord.com/api/webhooks/804824333913423923/qlEpAryvDXGPrXkIHrBI5JDmOMbi6B8u8bg_pL8sMVMBhhrt5o8sk37JQYGSwOc3l01k",
+      "https://discord.com/api/webhooks/806955359792005170/63mDY-CM-veI25ZjmC7bpEBjDHNSAvSA4xjWMFgbcYTMZbbNpJDlYL6NnAsbr7aSq7uI",
     headers: {
       "Content-Type": "application/json",
     },
