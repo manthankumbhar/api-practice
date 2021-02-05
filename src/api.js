@@ -58,19 +58,26 @@ router.get("/test", (req, res) => {
 });
 
 router.post("/test", (req, res) => {
-  let data = JSON.parse(req.body);
-  axios({
-    method: "post",
-    url:
-      "https://discord.com/api/webhooks/807014769335992320/_wsZUCx1ck_APvuj1zBTzs4c4tlKF_JIbF5porzpWLE7hNvGpG1YwbFHgaDqEitU7LXm",
-    data: {
-      content: JSON.stringify(
-        `${data.repository.owner.name} just pushed a commit with message - '${data.head_commit.message}' to <${data.repository.name}>`
-      ),
-      ContentType: "application/json",
+  console.log("pass - 1");
+  let reqData = JSON.parse(req.body);
+  console.log("pass - 2");
+  axios(
+    {
+      method: "post",
+      url:
+        "https://discord.com/api/webhooks/807014769335992320/_wsZUCx1ck_APvuj1zBTzs4c4tlKF_JIbF5porzpWLE7hNvGpG1YwbFHgaDqEitU7LXm",
+      data: {
+        content: JSON.stringify(
+          `${reqData.repository.owner.name} just pushed a commit with message - '${reqData.head_commit.message}' to <${reqData.repository.name}>`
+        ),
+        ContentType: "application/json",
+      },
     },
-  });
+    console.log("pass - 3")
+  );
+  console.log("pass - 4");
   res.json({ message: "success" });
+  console.log("pass - 5");
 });
 
 //<------------------------------------------------------------------------------------------------------------------------------------------------>
