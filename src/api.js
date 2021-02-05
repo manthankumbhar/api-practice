@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
   await axios({
     method: "post",
     url:
-      "https://discord.com/api/webhooks/807014769335992320/_wsZUCx1ck_APvuj1zBTzs4c4tlKF_JIbF5porzpWLE7hNvGpG1YwbFHgaDqEitU7LXm",
+      "https://discord.com/api/webhooks/807324150296870932/LzRLbGFnC5EqIt6wLLTbnzhQXEo55CT9kv6u9m7jSreEdI9q_iBVVEsGbo7OwrJfAodn",
     data: {
       content: JSON.stringify(
         `${reqData.repository.owner.login} just pushed a commit with message - '${reqData.repository.id}' to <${reqData.repository.name}>`
