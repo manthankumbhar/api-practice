@@ -1,86 +1,30 @@
-const { Router, json } = require("express");
 const express = require("express");
 const serverless = require("serverless-http");
-const request = require("request");
 const axios = require("axios");
 
 const app = express();
 
 const router = express.Router();
 
-//<------------------------------------------------------------------------------------------------------------------------------------------------>
-
 router.get("/", (req, res) => {
   res.json({ message: "hello" });
 });
 
-router.post("/", (req, res) => {
-  let data = JSON.parse(req.body);
-  request.post({
-    url:
-      "https://discord.com/api/webhooks/804824333913423923/qlEpAryvDXGPrXkIHrBI5JDmOMbi6B8u8bg_pL8sMVMBhhrt5o8sk37JQYGSwOc3l01k",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    json: {
-      content: `${data.repository.owner.name} just pushed a commit with message - '${data.head_commit.message}' to <${data.repository.name}>`,
-    },
-  });
-  res.json(
-    `${data.repository.owner.name} just pushed a commit with message - '${data.head_commit.message}' to <${data.repository.name}>`
-  );
-});
-
-//<------------------------------------------------------------------------------------------------------------------------------------------------>
-
-router.get("/dummy_discord", (req, res) => {
-  res.json({ message: "hello" });
-});
-
-router.post("/dummy_discord", (req, res) => {
-  // let data = JSON.parse(req.body);
-  request({
-    url:
-      "https://discord.com/api/webhooks/806955359792005170/63mDY-CM-veI25ZjmC7bpEBjDHNSAvSA4xjWMFgbcYTMZbbNpJDlYL6NnAsbr7aSq7uI",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    json: { content: "hello" },
-  });
-  res.json({ message: "Done" });
-});
-
-//<------------------------------------------------------------------------------------------------------------------------------------------------>
-
-router.get("/test", (req, res) => {
-  res.json({ message: "hello" });
-});
-
-router.post("/test", async (req, res) => {
-  console.log("pass - 1");
+router.post("/", async (req, res) => {
   let reqData = JSON.parse(req.body);
-  console.log("pass - 2");
-  await axios(
-    {
-      method: "post",
-      url:
-        "https://discord.com/api/webhooks/807014769335992320/_wsZUCx1ck_APvuj1zBTzs4c4tlKF_JIbF5porzpWLE7hNvGpG1YwbFHgaDqEitU7LXm",
-      data: {
-        content: JSON.stringify(
-          `${reqData.repository.owner.name} just pushed a commit with message - '${reqData.head_commit.message}' to <${reqData.repository.name}>`
-        ),
-        ContentType: "application/json",
-      },
+  await axios({
+    method: "post",
+    url:
+      "https://discord.com/api/webhooks/807324150296870932/LzRLbGFnC5EqIt6wLLTbnzhQXEo55CT9kv6u9m7jSreEdI9q_iBVVEsGbo7OwrJfAodn",
+    data: {
+      content: JSON.stringify(
+        `${reqData.repository.owner.name} just pushed a commit with message - '${reqData.head_commit.message}' to <${reqData.repository.name}>`
+      ),
+      ContentType: "application/json",
     },
-    console.log("pass - 3")
-  );
-  console.log("pass - 4");
+  });
   res.json({ message: "success" });
-  console.log("pass - 5");
 });
-
-//<------------------------------------------------------------------------------------------------------------------------------------------------>
 
 app.use("/.netlify/functions/api", router);
 
