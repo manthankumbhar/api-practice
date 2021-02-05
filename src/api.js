@@ -23,7 +23,7 @@ router.post("/", async (req, res) => {
       ContentType: "application/json",
     },
   });
-  res.json({ message: "success" });
+  res.json({ message: "done" });
 });
 
 app.use("/.netlify/functions/api", router);
