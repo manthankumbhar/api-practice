@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
       "https://discord.com/api/webhooks/807324150296870932/LzRLbGFnC5EqIt6wLLTbnzhQXEo55CT9kv6u9m7jSreEdI9q_iBVVEsGbo7OwrJfAodn",
     data: {
       content: JSON.stringify(
-        `${reqData.repository.owner.login} just pushed a commit with message - '${reqData.repository.id}' to <${reqData.repository.name}>`
+        `${reqData.repository.owner.login} just pushed a commit with message - '${reqData.head_commit.message}' to <${reqData.repository.name}>`
       ),
       ContentType: "application/json",
     },
