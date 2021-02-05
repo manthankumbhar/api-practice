@@ -57,11 +57,11 @@ router.get("/test", (req, res) => {
   res.json({ message: "hello" });
 });
 
-router.post("/test", (req, res) => {
+router.post("/test", async (req, res) => {
   console.log("pass - 1");
   let reqData = JSON.parse(req.body);
   console.log("pass - 2");
-  axios(
+  await axios(
     {
       method: "post",
       url:
