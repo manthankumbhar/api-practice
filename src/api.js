@@ -16,7 +16,7 @@ router.post("/", async (req, res) => {
   let reqData = JSON.parse(req.body);
   await axios({
     method: "post",
-    url: `${process.env.DISCORD_WEBHOOK_URL}`,
+    url: process.env.DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL,
     data: {
       content: JSON.stringify(
         `${reqData.repository.owner.login} just pushed a commit with message - '${reqData.head_commit.message}' to <${reqData.repository.name}>`
