@@ -1,7 +1,6 @@
 {
   "name": "api-practice",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "./node_modules/.bin/netlify-lambda serve src",
@@ -19,5 +18,14 @@
     "request": "^2.88.2",
     "serverless-http": "^2.7.0"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manthankumbhar/api-practice.git"
+  },
+  "bugs": {
+    "url": "https://github.com/manthankumbhar/api-practice/issues"
+  },
+  "homepage": "https://github.com/manthankumbhar/api-practice#readme",
+  "description": ""
 }
