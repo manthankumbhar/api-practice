@@ -12,7 +12,8 @@ router.get("/ready", (req, res) => {
   res.json({ message: "hello" });
 });
 
-router.post("/ready", async (req, res, error) => {
+router.post("/ready", async (req, res) => {
+  // try {
   var reqData = JSON.parse(req.body);
   var message = `${reqData.repository.owner.login} just pushed a commit with message - '${reqData.head_commit.message}' to <${reqData.repository.name}>`;
   if (
@@ -32,6 +33,9 @@ router.post("/ready", async (req, res, error) => {
     });
     res.json({ message: "success" });
   }
+  // } catch (error) {
+  //   res.status(500).json({ error: "failure" });
+  // }
 });
 
 app.use("/.netlify/functions/api", router);
