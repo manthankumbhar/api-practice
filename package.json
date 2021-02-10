@@ -1,5 +1,5 @@
 {
-  "name": "api-practice",
+  "name": "fiddling-with-github-discord-integration",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -21,11 +21,11 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/manthankumbhar/api-practice.git"
+    "url": "git+https://github.com/manthankumbhar/fiddling-with-github-discord-integration.git"
   },
   "bugs": {
-    "url": "https://github.com/manthankumbhar/api-practice/issues"
+    "url": "https://github.com/manthankumbhar/fiddling-with-github-discord-integration/issues"
   },
-  "homepage": "https://github.com/manthankumbhar/api-practice#readme",
+  "homepage": "https://github.com/manthankumbhar/fiddling-with-github-discord-integration#readme",
   "description": ""
 }
