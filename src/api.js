@@ -19,7 +19,7 @@ router.post("/ready", async (req, res) => {
     reqData.head_commit.message === null ||
     reqData.repository.name === null
   ) {
-    res.status(400).json({ error: "bad format" });
+    return res.status(400).json({ error: "bad format" });
   }
   var message = `${reqData.repository.owner.login} just pushed a commit with message - '${reqData.head_commit.message}' to <${reqData.repository.name}>`;
   await axios({
