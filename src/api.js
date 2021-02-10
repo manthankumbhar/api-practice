@@ -14,19 +14,23 @@ router.get("/ready", (req, res) => {
 
 router.post("/ready", async (req, res, error) => {
   try {
-    let reqData = JSON.parse(req.body);
-    const message = `${reqData.repository.owner.login} just pushed a commit with message - '${reqData.head_commit.message}' to <${reqData.repository.name}>`;
-    await axios({
-      method: "post",
-      url: process.env.DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL,
-      data: {
-        content: JSON.stringify(message),
-        ContentType: "application/json",
-      },
-    });
-    res.json({ message: "success" });
+    var reqData = JSON.parse(req.body);
+    var message = `${reqData.repository.owner.login} just pushed a commit with message - '${reqData.head_commit.message}' to <${reqData.repository.name}>`;
+    if (message.includes(null)) {
+      res.status(400).json({ error: "bad format" });
+    } else {
+      await axios({
+        method: "post",
+        url: process.env.DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL,
+        data: {
+          content: JSON.stringify(message),
+          ContentType: "application/json",
+        },
+      });
+      res.json({ message: "success" });
+    }
   } catch (error) {
-    res.status(400).json({ error: "bad format" });
+    res.status(500).json({ error: "failure" });
   }
 });
 
