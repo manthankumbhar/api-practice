@@ -20,18 +20,17 @@ router.post("/ready", async (req, res) => {
     reqData.repository.name === null
   ) {
     res.status(400).json({ error: "bad format" });
-  } else {
-    var message = `${reqData.repository.owner.login} just pushed a commit with message - '${reqData.head_commit.message}' to <${reqData.repository.name}>`;
-    await axios({
-      method: "POST",
-      url: process.env.DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL,
-      data: {
-        content: JSON.stringify(message),
-        ContentType: "application/json",
-      },
-    });
-    res.json({ message: "success" });
   }
+  var message = `${reqData.repository.owner.login} just pushed a commit with message - '${reqData.head_commit.message}' to <${reqData.repository.name}>`;
+  await axios({
+    method: "POST",
+    url: process.env.DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL,
+    data: {
+      content: JSON.stringify(message),
+      ContentType: "application/json",
+    },
+  });
+  res.json({ message: "success" });
 });
 
 app.use("/.netlify/functions/api", router);
