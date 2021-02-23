@@ -48,3 +48,14 @@ app.post("/github_push_webhook/:id", async (req, res) => {
     res.status(400).json(err.message);
   }
 });
+
+app.post("/github_discord_urls", async (req, res) => {
+  try {
+    const data = await pool.query(
+      `select discord_urls from github_discord_url`
+    );
+    res.json(data.rows);
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
+});
