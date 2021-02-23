@@ -3,29 +3,15 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/netlify-lambda serve src",
-    "build": "./node_modules/.bin/netlify-lambda build src",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "netlify-lambda": "^2.0.3",
-    "request": "^2.88.2",
-    "serverless-http": "^2.7.0"
-  },
-  "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/manthankumbhar/fiddling-with-github-discord-integration.git"
-  },
-  "bugs": {
-    "url": "https://github.com/manthankumbhar/fiddling-with-github-discord-integration/issues"
-  },
-  "homepage": "https://github.com/manthankumbhar/fiddling-with-github-discord-integration#readme",
-  "description": ""
+    "pg": "^8.5.1"
+  }
 }
