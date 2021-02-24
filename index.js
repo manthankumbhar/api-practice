@@ -51,11 +51,27 @@ app.post("/github_push_webhook/:id", async (req, res) => {
 
 app.post("/github_discord_urls", async (req, res) => {
   try {
+    const reqBody = req.body;
     const data = await pool.query(
-      `select discord_urls from github_discord_url`
+      `insert into github_discord_url (discord_urls) values ($1)`,
+      [reqBody.url]
     );
-    res.json(data.rows);
+    // console.log(reqBody.url);
+    const id = await pool.query(
+      `select id from github_discord_url where discord_urls = $1`,
+      [reqBody.url]
+    );
+    const id_matching_github_and_discord = id.rows[0];
+    res
+      .status(200)
+      .json(
+        `http://localhost:3000/github_discord_url/${id_matching_github_and_discord["id"]}`
+      );
   } catch (err) {
     res.status(500).json(err.message);
   }
 });
+
+// const discord_url = await pool.query(
+//     `select id from github_discord_url`
+// )
