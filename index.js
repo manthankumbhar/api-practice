@@ -19,27 +19,27 @@ app.post("/github_push_webhook/:id", async (req, res) => {
     const { id } = req.params;
     var reqData = req.body;
 
-    const commit_message = reqData.head_commit.message || reqData.repository.id;
-    // using this because when github sends the first POST request, there is no commit message which leads to error 400
-
+    if (reqData.head_commit === undefined) {
+      return res.status(200).json({ message: "Github is testing" });
+    }
     if (
       reqData.repository.owner.login === null ||
-      commit_message === null ||
       reqData.repository.name === null
     ) {
       return res.status(400).json({ error: "bad format" });
     }
-
-    var message = `${reqData.repository.owner.login} just pushed a commit with message - '${commit_message}' to <${reqData.repository.name}>`;
+    var message = `${reqData.repository.owner.login} just pushed a commit with message - '${reqData.head_commit.message}' to <${reqData.repository.name}>`;
     const data = await pool.query(
-      "select discord_urls from github_discord_url where id = $1",
+      "select discord_url from github_discord_url where id = $1",
       [id]
     );
-    const discord_url = data.rows[0];
+    const github_discord_url = data.rows[0];
+
+    console.log(data.rows[0]);
 
     await axios({
       method: "POST",
-      url: discord_url["discord_urls"],
+      url: github_discord_url["discord_url"],
       data: {
         content: JSON.stringify(message),
         ContentType: "application/json",
