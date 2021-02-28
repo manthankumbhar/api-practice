@@ -42,9 +42,7 @@ app.post("/github_push_webhook/:id", async (req, res) => {
       return res.status(400).json({ error: "bad format" });
     }
 
-    get_github_discord_url_by_id((db_id = id));
-
-    const github_discord_url = await get_github_discord_url_by_id();
+    const github_discord_url = await get_github_discord_url_by_id((db_id = id));
 
     var message = `${reqData.repository.owner.login} just pushed a commit with message - '${reqData.head_commit.message}' to <${reqData.repository.name}>`;
 
