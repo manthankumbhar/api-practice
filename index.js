@@ -1,10 +1,12 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const axios = require("axios");
 const pool = require("./database");
 require("dotenv").config();
 
 app.use(express.json());
+app.use(cors());
 
 let port = process.env.PORT || 3000;
 
@@ -49,16 +51,20 @@ app.post("/github_push_webhook/:id", async (req, res) => {
   }
 });
 
+app.get("/github_discord_urls", async (req, res) => {
+  res.json({ message: "Drop your discord urls in this api" });
+});
+
 app.post("/github_discord_urls", async (req, res) => {
   try {
     const reqBody = req.body;
     const data = await pool.query(
-      `insert into github_discord_url (discord_urls) values ($1)`,
+      `insert into github_discord_url (discord_url) values ($1)`,
       [reqBody.url]
     );
     // console.log(reqBody.url);
     const id = await pool.query(
-      `select id from github_discord_url where discord_urls = $1`,
+      `select id from github_discord_url where discord_url = $1`,
       [reqBody.url]
     );
     const id_matching_github_and_discord = id.rows[0];
