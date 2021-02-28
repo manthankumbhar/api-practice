@@ -22,9 +22,6 @@ async function get_github_discord_url_by_id() {
 
   return github_discord_url["discord_url"];
 }
-app.listen(port, () => {
-  console.log(`running on ${port}`);
-});
 
 app.post("/github_push_webhook/:id", async (req, res) => {
   try {
@@ -59,4 +56,8 @@ app.post("/github_push_webhook/:id", async (req, res) => {
   } catch (err) {
     res.status(400).json(err.message);
   }
+});
+
+app.listen(port, () => {
+  console.log(`running on ${port}`);
 });
