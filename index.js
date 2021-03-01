@@ -60,25 +60,41 @@ app.post("/github_push_webhook/:id", async (req, res) => {
   }
 });
 
+async function post_discord_url_to_db() {
+  try {
+    const data_2 = await pool.query(
+      `insert into github_discord_url (discord_url) values ($1)`,
+      [db_url]
+    );
+  } catch (err) {
+    console.log(err.message);
+  }
+}
+
+async function get_id_by_discord_url() {
+  try {
+    const data_3 = await pool.query(
+      `select id from github_discord_url where discord_url = $1`,
+      [db_url]
+    );
+    const matching_id = data_3.rows[0];
+    return matching_id["id"];
+  } catch (err) {
+    console.log(err.message);
+  }
+}
+
 app.post("/github_discord_urls", async (req, res) => {
   try {
     const reqBody = req.body;
-    const data = await pool.query(
-      `insert into github_discord_url (discord_url) values ($1)`,
-      [reqBody.url]
-    );
+    if (reqBody.url === null) {
+      return res.status(400).json({ message: "No url entered" });
+    }
+    await post_discord_url_to_db((db_url = reqBody.url));
+    const id_from_db = await get_id_by_discord_url((db_url = reqBody.url));
+    const res_url = `https://v2-github-discord-api-and-me.herokuapp.com/github_push_webhook/${id_from_db}`;
 
-    const id = await pool.query(
-      `select id from github_discord_url where discord_url = $1`,
-      [reqBody.url]
-    );
-
-    const id_matching_github_and_discord = id.rows[0];
-    res
-      .status(200)
-      .json(
-        `https://v2-github-discord-api-and-me.herokuapp.com/github_push_webhook/${id_matching_github_and_discord["id"]}`
-      );
+    res.status(200).json(res_url);
   } catch (err) {
     res.status(500).json(err.message);
   }
