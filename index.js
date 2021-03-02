@@ -13,7 +13,7 @@ let port = process.env.PORT || 3000;
 async function get_github_discord_url_by_id() {
   const data_1 = await pool.query(
     `select discord_url from github_discord_url where id = $1`,
-    [`${db_id}`]
+    [db_id]
   );
 
   if (data_1.rows === null || data_1.rows >= 2 || data_1.rows.length == 0) {
