@@ -69,11 +69,10 @@ async function insert_discord_url() {
 
 async function get_id_by_discord_url() {
   const data_3 = await pool.query(
-    `select id from github_discord_url where discord_url = $1`,
+    `select * from github_discord_url where discord_url = $1`,
     [db_url]
   );
-  const github_discord_id = data_3.rows[0];
-  return github_discord_id["id"];
+  return data_3.rows[0];
 }
 
 async function get_github_url() {
@@ -90,7 +89,7 @@ app.post("/github_discord_urls", async (req, res) => {
 
     await insert_discord_url((db_url = reqBody.url));
     const id_from_db = await get_id_by_discord_url((db_url = reqBody.url));
-    const res_url = await get_github_url((id = id_from_db));
+    const res_url = await get_github_url((id = id_from_db["id"]));
 
     res.status(200).json(res_url);
   } catch (err) {
