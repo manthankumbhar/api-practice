@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const axios = require("axios");
 const cors = require("cors");
+const bcrypt = require("bcrypt");
 const pool = require("./database");
 require("dotenv").config();
 
@@ -95,6 +96,27 @@ app.post("/github_discord_urls", async (req, res) => {
     res.status(200).json(res_url);
   } catch (err) {
     res.status(500).json(err.message);
+  }
+});
+
+async function insert_user_details_to_db() {
+  const data_4 = await pool.query(
+    `insert into auth_user_info (username, password) values ($1, $2)`,
+    [db_username, db_password]
+  );
+}
+
+app.post("/user_signup", async (req, res) => {
+  try {
+  const reqBody = req.body;
+  const hashedPassword = await bcrypt.hash(reqBody.password, 10);
+  await insert_user_details_to_db(
+    (db_username = reqBody.username),
+    (db_password = hashedPassword)
+  );
+    res.status(200).json({ success: "user added" });        
+  } catch (err) {
+    res.status(500).json(err.message);    
   }
 });
 
