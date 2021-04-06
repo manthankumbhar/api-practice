@@ -120,6 +120,19 @@ app.post("/user_signup", async (req, res) => {
   }
 });
 
+async function fetch_username_from_db() {
+  const data5 = await pool.query(
+    `select * from auth_user_info where username = $1`,[db_username]
+  )
+  return data5.rows[0];
+}
+
+app.post("/user_auth", async (req, res) => {
+  const reqBody = req.body;
+  
+  if(reqBody.username === )
+});
+
 app.listen(port, () => {
   console.log(`running on ${port}`);
 });
