@@ -108,15 +108,15 @@ async function insert_user_details_to_db() {
 
 app.post("/user_signup", async (req, res) => {
   try {
-  const reqBody = req.body;
-  const hashedPassword = await bcrypt.hash(reqBody.password, 10);
-  await insert_user_details_to_db(
-    (db_username = reqBody.username),
-    (db_password = hashedPassword)
-  );
-    res.status(200).json({ success: "user added" });        
+    const reqBody = req.body;
+    const hashedPassword = await bcrypt.hash(reqBody.password, 10);
+    await insert_user_details_to_db(
+      (db_username = reqBody.username),
+      (db_password = hashedPassword)
+    );
+    res.status(200).json({ success: "user added" });
   } catch (err) {
-    res.status(500).json(err.message);    
+    res.status(500).json(err.message);
   }
 });
 
