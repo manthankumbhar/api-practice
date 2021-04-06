@@ -101,18 +101,40 @@ app.post("/github_discord_urls", async (req, res) => {
 
 async function insert_user_details_to_db() {
   const data_4 = await pool.query(
-    `insert into auth_user_info (username, password) values ($1, $2)`,
-    [db_username, db_password]
+    `insert into auth_user_info(email, password) values ($1, $2)`,
+    [db_email, db_password]
   );
+  return get_user_details_from_db();
+}
+
+async function get_user_details_from_db() {
+  const data_5 = await pool.query(
+    `select * from auth_user_info where email = $1`,
+    [db_email]
+  );
+  return data_5.rows[0];
 }
 
 app.post("/user_signup", async (req, res) => {
   try {
     const reqBody = req.body;
+    if (
+      reqBody.email == null ||
+      reqBody.email == "" ||
+      reqBody.password == null ||
+      reqBody.password == ""
+    ) {
+      return res
+        .status(400)
+        .json({ error: "email or password is not entered" });
+    }
     const hashedPassword = await bcrypt.hash(reqBody.password, 10);
     await insert_user_details_to_db(
-      (db_username = reqBody.username),
+      (db_email = reqBody.email),
       (db_password = hashedPassword)
+    );
+    var email_from_db = await get_user_details_from_db(
+      (db_email = reqBody.email)
     );
     res.status(200).json({ success: "user added" });
   } catch (err) {

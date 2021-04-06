@@ -6,6 +6,9 @@ create table github_discord_url(
 );
 
 create table auth_user_info(
-    username VARCHAR(20) NOT NULL,
-    password VARCHAR NOT NULL
+    id uuid DEFAULT uuid_generate_v4() not null,
+    email VARCHAR NOT NULL UNIQUE,
+    password VARCHAR NOT NULL,
+    created_at timestamptz DEFAULT Now() not null,
+    updated_at timestamptz DEFAULT Now() not null
 );
