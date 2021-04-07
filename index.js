@@ -3,6 +3,7 @@ const app = express();
 const axios = require("axios");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 const pool = require("./database");
 require("dotenv").config();
 
@@ -99,20 +100,20 @@ app.post("/github_discord_urls", async (req, res) => {
   }
 });
 
-async function insert_user_details_to_db() {
-  const data_4 = await pool.query(
-    `insert into auth_user_info(email, password) values ($1, $2)`,
-    [db_email, db_password]
-  );
-  return get_user_details_from_db();
-}
-
-async function get_user_details_from_db() {
+async function get_user_details_from_db(email) {
   const data_5 = await pool.query(
     `select * from auth_user_info where email = $1`,
-    [db_email]
+    [email]
   );
   return data_5.rows[0];
+}
+
+async function insert_user_details_to_db(email, password) {
+  const data_4 = await pool.query(
+    `insert into auth_user_info(email, password) values ($1, $2)`,
+    [email, password]
+  );
+  return get_user_details_from_db();
 }
 
 app.post("/user_signup", async (req, res) => {
@@ -129,13 +130,8 @@ app.post("/user_signup", async (req, res) => {
         .json({ error: "email or password is not entered" });
     }
     const hashedPassword = await bcrypt.hash(reqBody.password, 10);
-    await insert_user_details_to_db(
-      (db_email = reqBody.email),
-      (db_password = hashedPassword)
-    );
-    var email_from_db = await get_user_details_from_db(
-      (db_email = reqBody.email)
-    );
+    await insert_user_details_to_db(reqBody.email, hashedPassword);
+    var email_from_db = await get_user_details_from_db(reqBody.email);
     res.status(200).json({ success: "user added" });
   } catch (err) {
     res.status(500).json(err.message);
