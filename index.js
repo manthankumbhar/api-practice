@@ -106,8 +106,10 @@ async function get_auth_user_info_by_email(email) {
   );
   if (data.rows.length <= 0) {
     return null;
-  } else {
+  } else if (data.rows.length == 1) {
     return data.rows[0];
+  } else if (data.rows.length > 1) {
+    throw new Error("error: voilates the unique ability!");
   }
 }
 
