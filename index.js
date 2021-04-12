@@ -149,6 +149,32 @@ app.post("/user_signup", async (req, res) => {
   }
 });
 
+app.post("/user_auth", async (req, res) => {
+  var reqBody = req.body;
+  var check_auth_user_info_by_email = await get_auth_user_info_by_email(
+    reqBody.email
+  );
+  if (!check_auth_user_info_by_email) {
+    return res
+      .status(400)
+      .json({ error: "user doesn't exist, please signup!" });
+  }
+  try {
+    if (
+      await bcrypt.compare(
+        reqBody.password,
+        check_auth_user_info_by_email["password"]
+      )
+    ) {
+      res.status(200).json({ success: "user authenticated!" });
+    } else {
+      res.status(400).json({ error: "wrong password!" });
+    }
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
+});
+
 app.listen(port, () => {
   console.log(`running on ${port}`);
 });
