@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const axios = require("axios");
 const cors = require("cors");
+const bcrypt = require("bcrypt");
 const pool = require("./database");
 require("dotenv").config();
 
@@ -93,6 +94,56 @@ app.post("/github_discord_urls", async (req, res) => {
     const res_url = await get_github_url((id = id_from_db["id"]));
 
     res.status(200).json(res_url);
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
+});
+
+async function get_auth_user_info_by_email(email) {
+  const data = await pool.query(
+    `select * from auth_user_info where email = $1`,
+    [email]
+  );
+  if (data.rows.length <= 0) {
+    return null;
+  } else if (data.rows.length == 1) {
+    return data.rows[0];
+  } else if (data.rows.length > 1) {
+    throw new Error("error: voilates the unique ability!");
+  }
+}
+
+async function insert_auth_user_info(email, password) {
+  const data = await pool.query(
+    `insert into auth_user_info(email, password) values ($1, $2)`,
+    [email, password]
+  );
+  return await get_auth_user_info_by_email(email);
+}
+
+app.post("/user_signup", async (req, res) => {
+  try {
+    const reqBody = req.body;
+    if (
+      reqBody.email == null ||
+      reqBody.email == "" ||
+      reqBody.password == null ||
+      reqBody.password == ""
+    ) {
+      return res
+        .status(400)
+        .json({ error: "email or password is not entered" });
+    }
+    var check_auth_user_info_by_email = await get_auth_user_info_by_email(
+      reqBody.email
+    );
+    if (check_auth_user_info_by_email) {
+      return res.status(400).json({ error: "user already exists!" });
+    }
+
+    const hashedPassword = await bcrypt.hash(reqBody.password, 10);
+    await insert_auth_user_info(reqBody.email, hashedPassword);
+    res.status(200).json({ success: "user added" });
   } catch (err) {
     res.status(500).json(err.message);
   }
