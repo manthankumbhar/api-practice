@@ -152,21 +152,21 @@ app.post("/user_signup", async (req, res) => {
 
 app.post("/user_auth", async (req, res) => {
   var reqBody = req.body;
-  var user_exists = await get_auth_user_info_by_email(reqBody.email);
-  if (!user_exists) {
+  var user = await get_auth_user_info_by_email(reqBody.email);
+  if (!user) {
     return res
       .status(400)
       .json({ error: "user doesn't exist, please signup!" });
   }
-  if (await bcrypt.compare(reqBody.password, user_exists["password"])) {
+  if (await bcrypt.compare(reqBody.password, user["password"])) {
     res.status(200).json({ success: "user authenticated!" });
     var accessToken = await jwt.sign(
-      user_exists,
+      user["email"],
       process.env.ACCESS_TOKEN_SECRET
     );
     console.log(accessToken);
   } else {
-    res.status(400).json({ error: "wrong password!" });
+    res.status(400).json({ error: "incorrect email or password" });
   }
 });
 
