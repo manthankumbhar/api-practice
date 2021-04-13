@@ -4,6 +4,7 @@ const axios = require("axios");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const pool = require("./database");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 app.use(express.json());
@@ -151,27 +152,21 @@ app.post("/user_signup", async (req, res) => {
 
 app.post("/user_auth", async (req, res) => {
   var reqBody = req.body;
-  var check_auth_user_info_by_email = await get_auth_user_info_by_email(
-    reqBody.email
-  );
-  if (!check_auth_user_info_by_email) {
+  var user_exists = await get_auth_user_info_by_email(reqBody.email);
+  if (!user_exists) {
     return res
       .status(400)
       .json({ error: "user doesn't exist, please signup!" });
   }
-  try {
-    if (
-      await bcrypt.compare(
-        reqBody.password,
-        check_auth_user_info_by_email["password"]
-      )
-    ) {
-      res.status(200).json({ success: "user authenticated!" });
-    } else {
-      res.status(400).json({ error: "wrong password!" });
-    }
-  } catch (err) {
-    res.status(500).json(err.message);
+  if (await bcrypt.compare(reqBody.password, user_exists["password"])) {
+    res.status(200).json({ success: "user authenticated!" });
+    var accessToken = await jwt.sign(
+      user_exists,
+      process.env.ACCESS_TOKEN_SECRET
+    );
+    console.log(accessToken);
+  } else {
+    res.status(400).json({ error: "wrong password!" });
   }
 });
 
