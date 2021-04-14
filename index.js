@@ -4,6 +4,7 @@ const axios = require("axios");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const pool = require("./database");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 app.use(express.json());
@@ -146,6 +147,22 @@ app.post("/user_signup", async (req, res) => {
     res.status(200).json({ success: "user added" });
   } catch (err) {
     res.status(500).json(err.message);
+  }
+});
+
+app.post("/user_auth", async (req, res) => {
+  var reqBody = req.body;
+  var user = await get_auth_user_info_by_email(reqBody.email);
+  if (!user) {
+    return res
+      .status(400)
+      .json({ error: "user doesn't exist, please signup!" });
+  }
+  if (await bcrypt.compare(reqBody.password, user["password"])) {
+    var accessToken = jwt.sign(user["email"], process.env.ACCESS_TOKEN_SECRET);
+    res.status(200).json({ accessToken: accessToken });
+  } else {
+    res.status(400).json({ error: "incorrect email or password" });
   }
 });
 
