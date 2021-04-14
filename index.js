@@ -159,12 +159,8 @@ app.post("/user_auth", async (req, res) => {
       .json({ error: "user doesn't exist, please signup!" });
   }
   if (await bcrypt.compare(reqBody.password, user["password"])) {
-    res.status(200).json({ success: "user authenticated!" });
-    var accessToken = await jwt.sign(
-      user["email"],
-      process.env.ACCESS_TOKEN_SECRET
-    );
-    console.log(accessToken);
+    var accessToken = jwt.sign(user["email"], process.env.ACCESS_TOKEN_SECRET);
+    res.status(200).json({ accessToken: accessToken });
   } else {
     res.status(400).json({ error: "incorrect email or password" });
   }
