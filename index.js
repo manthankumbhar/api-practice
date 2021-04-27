@@ -144,7 +144,9 @@ app.post("/user_signup", async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(reqBody.password, 10);
     await insert_auth_user_info(reqBody.email, hashedPassword);
-    res.status(200).json({ success: "user added" });
+    var user = await get_auth_user_info_by_email(reqBody.email);
+    var accessToken = jwt.sign(user["email"], process.env.ACCESS_TOKEN_SECRET);
+    res.status(200).json({ success: accessToken });
   } catch (err) {
     res.status(500).json(err.message);
   }
