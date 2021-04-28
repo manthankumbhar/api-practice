@@ -154,6 +154,14 @@ app.post("/user_signup", async (req, res) => {
 
 app.post("/user_auth", async (req, res) => {
   var reqBody = req.body;
+  if (
+    reqBody.email == null ||
+    reqBody.email == "" ||
+    reqBody.password == null ||
+    reqBody.password == ""
+  ) {
+    return res.status(400).json({ error: "email or password is not entered" });
+  }
   var user = await get_auth_user_info_by_email(reqBody.email);
   if (!user) {
     return res
