@@ -144,7 +144,9 @@ app.post("/user_signup", async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(reqBody.password, 10);
     await insert_auth_user_info(reqBody.email, hashedPassword);
-    res.status(200).json({ success: "user added" });
+    var user = await get_auth_user_info_by_email(reqBody.email);
+    var accessToken = jwt.sign(user["email"], process.env.ACCESS_TOKEN_SECRET);
+    res.status(200).json({ success: accessToken });
   } catch (err) {
     res.status(500).json(err.message);
   }
@@ -152,6 +154,14 @@ app.post("/user_signup", async (req, res) => {
 
 app.post("/user_auth", async (req, res) => {
   var reqBody = req.body;
+  if (
+    reqBody.email == null ||
+    reqBody.email == "" ||
+    reqBody.password == null ||
+    reqBody.password == ""
+  ) {
+    return res.status(400).json({ error: "email or password is not entered" });
+  }
   var user = await get_auth_user_info_by_email(reqBody.email);
   if (!user) {
     return res
@@ -160,7 +170,7 @@ app.post("/user_auth", async (req, res) => {
   }
   if (await bcrypt.compare(reqBody.password, user["password"])) {
     var accessToken = jwt.sign(user["email"], process.env.ACCESS_TOKEN_SECRET);
-    res.status(200).json({ accessToken: accessToken });
+    res.status(200).json({ success: accessToken });
   } else {
     res.status(400).json({ error: "incorrect email or password" });
   }
