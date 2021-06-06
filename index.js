@@ -12,6 +12,10 @@ app.use(cors());
 
 let port = process.env.PORT || 3000;
 
+app.get("/", (req, res) => {
+  res.json({ message: "hello!" });
+});
+
 async function get_github_discord_url_by_id() {
   const data_1 = await pool.query(
     `select discord_url from github_discord_url where id = $1`,
